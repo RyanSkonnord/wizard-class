@@ -170,78 +170,7 @@
       </section>
 
       <section class="bigcode">
-        <pre><code class="ruby">class Person
-  attr_accessor :name
-  attr_accessor :weapon
-
-  def introduce
-    puts "Hello, my name is #{@name}."
-  end
-
-  def drink_tea
-    puts 'Slurp'
-  end
-
-  def fight(target)
-    unless @weapon.nil?
-      puts "#{@name} fights #{target.name}. #{@weapon.attack}"
-    end
-  end
-end
-
-class Wizard < Person
-  attr_accessor :hat_color
-  attr_accessor :is_humble
-
-  def introduce
-    if is_humble then
-      super
-    else
-      puts "Lo, behold, I am #{name} the #{hat_color}."
-    end
-  end
-
-end
-
-sam = Person.new
-sam.name = 'Sam'
-sam.introduce
-
-gandalf = Wizard.new
-gandalf.name = 'Gandalf'
-gandalf.hat_color = 'Grey'
-gandalf.introduce
-
-saruman = Wizard.new
-saruman.name = 'Saruman'
-saruman.hat_color = 'White'
-saruman.introduce
-
-gandalf.is_humble = true
-gandalf.introduce
-
-class Staff
-  def attack
-    'Zap!'
-  end
-end
-
-class FireStaff < Staff
-  def attack
-    'Fwoosh! Kaboom!'
-  end
-end
-
-class FrostStaff < Staff
-  def attack
-    'Brr! Crack!'
-  end
-end
-
-gandalf.weapon = FireStaff.new
-saruman.weapon = FrostStaff.new
-gandalf.fight(saruman)
-saruman.fight(gandalf)</code></pre>
+        <code class="ruby" data-file="code/goal.rb"></code>
       </section>
     </section>
 
@@ -331,7 +260,7 @@ saruman.fight(gandalf)</code></pre>
           "<a href="https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-13.html">data abstraction</a>"
           to describe almost the same concept as encapsulation.</p>
 
-        <pre><code class="python">def make_rectangle(length, width):
+        <code class="python"><pre>def make_rectangle(length, width):
     return {'length': length, 'width': width}
 def get_perimeter(rectangle):
     return 2 * (rectangle['length'] + rectangle['width'])
@@ -340,7 +269,8 @@ def get_area(rectangle):
 
 my_rectangle = make_rectangle(3, 5)
 print('Perimeter is:', get_perimeter(my_rectangle))
-print('Area is:', get_area(my_rectangle))</code></pre>
+print('Area is:', get_area(my_rectangle))</pre>
+        </code>
       </section>
       <section>
         <h3>Encapsulation, Lisp-style</h3>
@@ -363,7 +293,7 @@ print('Area is:', get_area(my_rectangle))</code></pre>
           uses them will work
           the same.</p>
 
-        <pre><code class="python">def make_rectangle(length, width):
+        <code class="python"><pre>def make_rectangle(length, width):
     return {'olinguito': length, 'keeshond': width}
 def get_perimeter(rectangle):
     return 2 * (rectangle['olinguito'] + rectangle['keeshond'])
@@ -372,14 +302,15 @@ def get_area(rectangle):
 
 my_rectangle = make_rectangle(3, 5)
 print('Perimeter is:', get_perimeter(my_rectangle))
-print('Area is:', get_area(my_rectangle))</code></pre>
+print('Area is:', get_area(my_rectangle))</pre>
+        </code>
       </section>
     </section>
     <section>
       <section>
         <h3>First-class functions</h3>
 
-        <pre><code class="python">def square(x):
+        <code class="python"><pre>def square(x):
     return x * x
 
 def apply_twice_and_print(function, argument):
@@ -387,14 +318,15 @@ def apply_twice_and_print(function, argument):
     result = function(result)
     print(result)
 
-apply_twice_and_print(square, 4)</code></pre>
+apply_twice_and_print(square, 4)</pre>
+        </code>
       </section>
       <section>
         <h3>First-class functions</h3>
 
         <p>A more realistic example: callbacks.</p>
 
-        <pre><code class="javascript">$("button").click(function() {
+        <code class="javascript"><pre>$("button").click(function() {
     $.ajax({
         url: "http://example.com/my-service",
 
@@ -408,7 +340,8 @@ apply_twice_and_print(square, 4)</code></pre>
             alert(error );
         }
     });
-});</code></pre>
+});</pre>
+        </code>
 
       </section>
     </section>
@@ -425,7 +358,7 @@ apply_twice_and_print(square, 4)</code></pre>
       <section>
         <h3>Message passing in Python</h3>
 
-        <pre><code class="python">def make_rectangle(length, width):
+        <code class="python"><pre>def make_rectangle(length, width):
 
     def receive_message(message):
         if message == 'get_perimeter':
@@ -443,7 +376,8 @@ def get_area(rectangle):
 
 small_rectangle = make_rectangle(3, 5)
 big_rectangle = make_rectangle(30, 50)
-print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
+print(get_area(small_rectangle), get_area(big_rectangle))</pre>
+        </code>
 
         <p class="fragment">Note that the calculation logic has moved from the "get" functions to the object itself.</p>
       </section>
@@ -456,7 +390,7 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
       </section>
       <section>
         <p>No one go downstairs and check in code that looks like this.</p>
-        <pre><code class="java">  public void processArticle(String message, Article article) {
+        <code class="java"><pre>  public void processArticle(String message, Article article) {
     if ("ingest".equals(message)) {
       // ...
     } else if ("render".equals(message)) {
@@ -464,7 +398,8 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
     } else if ("delete".equals(message)) {
       // ...
     }
-  }</code></pre>
+  }</pre>
+        </code>
 
         <p class="fragment">It will not pass code review.</p>
       </section>
@@ -524,7 +459,7 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
 
       <section>
         <p>In Java, what you see is this:</p>
-        <pre><code class="java">  public long getCount(final String name) {
+        <code class="java"><pre>  public long getCount(final String name) {
     return hibernateTemplate.execute(new HibernateCallback&lt;Long&gt;() {
       @Override public Long doInHibernate(Session session) throws HibernateException, SQLException {
         Query query = session.createQuery("select count(*) from Thing where name=:name");
@@ -532,10 +467,11 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
         return (Long) query.uniqueResult();
       }
     });
-  }</code></pre></section>
+  }</pre>
+        </code></section>
       <section>
         <p>What it's actually doing is this:</p>
-        <pre><code class="java">  public long getCount(final String name) {
+        <code class="java"><pre>  public long getCount(final String name) {
     return hibernateTemplate.execute(new InvisibleAnonymousClass(name));
   }
 
@@ -551,7 +487,8 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
       query.setParameter("name", name);
       return (Long) query.uniqueResult();
     }
-  }</code></pre>
+  }</pre>
+        </code>
 
         <p class="fragment">Java forces you to declare <code>name</code> as <code>final</code> because you can't see
           when it is passed to
@@ -582,13 +519,14 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
         </ul>
       </section>
       <section>
-        <pre><code class="python">def square(x):
+        <code class="python"><pre>def square(x):
     return x * x
 map(square,  # First-class, but not anonymous
     [1, 2, 3])
 
 map((lambda x: x * x),  # Anonymous
-    [1, 2, 3])</code></pre>
+    [1, 2, 3])</pre>
+        </code>
       </section>
     </section>
     <section>
@@ -693,443 +631,13 @@ map((lambda x: x * x),  # Anonymous
       <h2>Onto the main event!</h2>
     </section>
 
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end</code></pre></section>
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end
-
-def make_class()
-  class_message_table = {}
-  new_class = make_object(class_message_table)
-
-  class_message_table[:instantiate] = lambda do | |
-    instance_message_table = {}
-    new_instance = make_object(instance_message_table)
-    return new_instance
-  end
-
-  return new_class
-end
-
-Person = make_class()
-sam = ask(Person, :instantiate)
-puts sam</code></pre></section>
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end
-
-def make_class()
-  class_message_table = {}
-  new_class = make_object(class_message_table)
-
-  class_message_table[:instantiate] = lambda do | |
-    fields = {}
-    instance_message_table = {}
-    new_instance = make_object(instance_message_table)
-
-    instance_message_table[:get_field] = lambda do |field_name|
-      return fields[field_name]
-    end
-
-    instance_message_table[:set_field] = lambda do |field_name, value|
-      fields[field_name] = value
-    end
-
-    return new_instance
-  end
-
-  return new_class
-end
-
-Person = make_class()
-sam = ask(Person, :instantiate)
-ask(sam, :set_field, :name, 'Sam')
-puts ask(sam, :get_field, :name)</code></pre></section>
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end
-
-def make_class(method_table)
-  class_message_table = {}
-  new_class = make_object(class_message_table)
-
-  class_message_table[:instantiate] = lambda do | |
-    fields = {}
-    instance_message_table = {}
-    new_instance = make_object(instance_message_table)
-
-    instance_message_table[:get_field] = lambda do |field_name|
-      return fields[field_name]
-    end
-
-    instance_message_table[:set_field] = lambda do |field_name, value|
-      fields[field_name] = value
-    end
-
-    instance_message_table[:call_method] = lambda do |method_name, *method_args|
-      method = method_table[method_name]
-      return method.call(new_instance, *method_args)
-    end
-
-    return new_instance
-  end
-
-  return new_class
-end
-
-Person = make_class({
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        puts "Hello, my name is #{name}."
-                      end,
-                    })
-
-sam = ask(Person, :instantiate)
-ask(sam, :set_field, :name, 'Sam')
-ask(sam, :call_method, :introduce)</code></pre></section>
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end
-
-def make_class(parents, method_table)
-  class_message_table = {}
-  new_class = make_object(class_message_table)
-
-  class_message_table[:get_method] = lambda do |method_name|
-    method = nil
-    if method_table.has_key? method_name
-      method = method_table[method_name]
-    else
-      parents.each do |parent|
-        method = ask(parent, :get_method, method_name)
-        unless method.nil?
-          break
-        end
-      end
-    end
-    return method
-  end
-
-  class_message_table[:instantiate] = lambda do | |
-    fields = {}
-    instance_message_table = {}
-    new_instance = make_object(instance_message_table)
-
-    instance_message_table[:get_field] = lambda do |field_name|
-      return fields[field_name]
-    end
-
-    instance_message_table[:set_field] = lambda do |field_name, value|
-      fields[field_name] = value
-    end
-
-    instance_message_table[:call_method] = lambda do |method_name, *method_args|
-      method = ask(new_class, :get_method, method_name)
-      return method.call(new_instance, *method_args)
-    end
-
-    return new_instance
-  end
-
-  return new_class
-end
-
-Person = make_class([],
-                    {
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        puts "Hello, my name is #{name}."
-                      end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                    })
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        hat_color = ask(this, :get_field, :hat_color)
-                        puts "Lo, behold, I am #{name} the #{hat_color}."
-                      end
-                    })
-
-sam = ask(Person, :instantiate)
-ask(sam, :set_field, :name, 'Sam')
-ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
-
-gandalf = ask(Wizard, :instantiate)
-ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
-ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)</code></pre></section>
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end
-
-def make_class(parents, method_table)
-  class_message_table = {}
-  new_class = make_object(class_message_table)
-
-  class_message_table[:get_method] = lambda do |method_name|
-    method = nil
-    if method_table.has_key? method_name
-      method = method_table[method_name]
-    else
-      parents.each do |parent|
-        method = ask(parent, :get_method, method_name)
-        unless method.nil?
-          break
-        end
-      end
-    end
-    return method
-  end
-
-  class_message_table[:get_usual_method] = lambda do |method_name|
-    return method_table[method_name]
-  end
-
-  class_message_table[:instantiate] = lambda do | |
-    fields = {}
-    instance_message_table = {}
-    new_instance = make_object(instance_message_table)
-
-    instance_message_table[:get_field] = lambda do |field_name|
-      return fields[field_name]
-    end
-
-    instance_message_table[:set_field] = lambda do |field_name, value|
-      fields[field_name] = value
-    end
-
-    instance_message_table[:call_method] = lambda do |method_name, *method_args|
-      method = ask(new_class, :get_method, method_name)
-      return method.call(new_instance, *method_args)
-    end
-
-    instance_message_table[:call_usual_method] = lambda do |class_obj, method_name, *method_args|
-      method = ask(class_obj, :get_usual_method, method_name)
-      return method.call(new_instance, *method_args)
-    end
-
-    return new_instance
-  end
-
-  return new_class
-end
-
-Person = make_class([],
-                    {
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        puts "Hello, my name is #{name}."
-                      end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                    })
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        if ask(this, :get_field, :is_humble) then
-                          ask(this, :call_usual_method, Person, :introduce)
-                        else
-                          name = ask(this, :get_field, :name)
-                          hat_color = ask(this, :get_field, :hat_color)
-                          puts "Lo, behold, I am #{name} the #{hat_color}."
-                        end
-                      end
-                    })
-
-sam = ask(Person, :instantiate)
-ask(sam, :set_field, :name, 'Sam')
-ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
-
-gandalf = ask(Wizard, :instantiate)
-ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
-ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)
-
-ask(gandalf, :set_field, :is_humble, true)
-ask(gandalf, :call_method, :introduce)</code></pre></section>
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end
-
-def make_class(parents, method_table)
-  class_message_table = {}
-  new_class = make_object(class_message_table)
-
-  class_message_table[:get_method] = lambda do |method_name|
-    method = nil
-    if method_table.has_key? method_name
-      method = method_table[method_name]
-    else
-      parents.each do |parent|
-        method = ask(parent, :get_method, method_name)
-        unless method.nil?
-          break
-        end
-      end
-    end
-    return method
-  end
-
-  class_message_table[:get_usual_method] = lambda do |method_name|
-    return method_table[method_name]
-  end
-
-  class_message_table[:instantiate] = lambda do | |
-    fields = {}
-    instance_message_table = {}
-    new_instance = make_object(instance_message_table)
-
-    instance_message_table[:get_field] = lambda do |field_name|
-      return fields[field_name]
-    end
-
-    instance_message_table[:set_field] = lambda do |field_name, value|
-      fields[field_name] = value
-    end
-
-    instance_message_table[:call_method] = lambda do |method_name, *method_args|
-      method = ask(new_class, :get_method, method_name)
-      return method.call(new_instance, *method_args)
-    end
-
-    instance_message_table[:call_usual_method] = lambda do |class_obj, method_name, *method_args|
-      method = ask(class_obj, :get_usual_method, method_name)
-      return method.call(new_instance, *method_args)
-    end
-
-    return new_instance
-  end
-
-  return new_class
-end
-
-Person = make_class([],
-                    {
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        puts "Hello, my name is #{name}."
-                      end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                      :fight => lambda do |this, target|
-                        weapon = ask(this, :get_field, :weapon)
-                        unless weapon.nil?
-                          name = ask(this, :get_field, :name)
-                          target_name = ask(target, :get_field, :name)
-                          weapon_attack = ask(weapon, :call_method, :attack)
-                          puts "#{name} fights #{target_name}. #{weapon_attack}"
-                        end
-                      end,
-                    })
-
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        if ask(this, :get_field, :is_humble) then
-                          ask(this, :call_usual_method, Person, :introduce)
-                        else
-                          name = ask(this, :get_field, :name)
-                          hat_color = ask(this, :get_field, :hat_color)
-                          puts "Lo, behold, I am #{name} the #{hat_color}."
-                        end
-                      end
-                    })
-
-sam = ask(Person, :instantiate)
-ask(sam, :set_field, :name, 'Sam')
-ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
-
-gandalf = ask(Wizard, :instantiate)
-ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
-ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)
-
-saruman = ask(Wizard, :instantiate)
-ask(saruman, :set_field, :name, 'Saruman')
-ask(saruman, :set_field, :hat_color, 'White')
-ask(saruman, :call_method, :introduce)
-
-ask(gandalf, :set_field, :is_humble, true)
-ask(gandalf, :call_method, :introduce)
-
-Staff = make_class([],
-                   {
-                     :attack => lambda do |this|
-                       'Zap!'
-                     end
-                   })
-FireStaff = make_class([Staff],
-                       {
-                         :attack => lambda do |this|
-                           'Fwoosh! Kaboom!'
-                         end
-                       })
-FrostStaff = make_class([Staff],
-                        {
-                          :attack => lambda do |this|
-                            'Brr! Crack!'
-                          end
-                        })
-
-ask(gandalf, :set_field, :weapon, ask(FireStaff, :instantiate))
-ask(saruman, :set_field, :weapon, ask(FrostStaff, :instantiate))
-ask(gandalf, :call_method, :fight, saruman)
-ask(saruman, :call_method, :fight, gandalf)</code></pre></section>
+    <section class="bigcode"><code class="ruby" data-file="code/step1.rb"></code></section>
+    <section class="bigcode"><code class="ruby" data-file="code/step2.rb"></code></section>
+    <section class="bigcode"><code class="ruby" data-file="code/step3.rb"></code></section>
+    <section class="bigcode"><code class="ruby" data-file="code/step4.rb"></code></section>
+    <section class="bigcode"><code class="ruby" data-file="code/step5.rb"></code></section>
+    <section class="bigcode"><code class="ruby" data-file="code/step6.rb"></code></section>
+    <section class="bigcode"><code class="ruby" data-file="code/wizard_class.rb"></code></section>
 
     <section>
       <p>View these slides at<br/>
@@ -1217,4 +725,3 @@ ask(saruman, :call_method, :fight, gandalf)</code></pre></section>
 
 </body>
 </html>
-
