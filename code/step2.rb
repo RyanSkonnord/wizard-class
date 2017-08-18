@@ -23,6 +23,7 @@ def make_class()
   return new_class
 end
 
+
 Person = make_class()
 sam = ask(Person, :instantiate)
 puts sam

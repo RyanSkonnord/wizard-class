@@ -6,8 +6,8 @@
 
   <title>Wizard Class</title>
 
-  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-  <meta name="author" content="Hakim El Hattab">
+  <!--meta name="description" content=""-->
+  <meta name="author" content="Ryan Skonnord">
 
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -76,7 +76,7 @@
 
     <section>
       <h1>Wizard Class</h1>
-      <h4>with <a href="mailto:rskonnord@plos.org">Ryan Skonnord</a></h4>
+      <h4>with <a href="mailto:ryanskonnord@gmail.com">Ryan Skonnord</a></h4>
     </section>
     <section>
       <section>
@@ -101,8 +101,7 @@
           science, aside from implementation details.</p>
 
         <p class="fragment">It uses basic, but very elegant and powerful, concepts to explain a wide variety of topics
-          in
-          programming.</p>
+          in programming.</p>
 
         <p class="fragment">These concepts are expressed in the language Scheme, a dialect of Lisp.</p>
       </section>
@@ -146,27 +145,16 @@
           abstractions.</p>
 
         <p class="fragment">I was inspired by something that the faculty at Berkeley had added on to the course
-          material: a library of
-          macros that extended Scheme with object-oriented features.</p>
+          material: a library of macros that extended Scheme with object-oriented features.</p>
 
         <p class="fragment">Let's make our own classes.</p>
-      </section>
-      <section>
-        <p>I was also inspired by Matt Bowen's talk on abstraction layers.</p>
-
-        <p class="fragment">Whereas Matt delved through multiple layers, I want to take a microscope to a single
-          abstraction.</p>
       </section>
 
       <section>
         <p>You might think of classes as magic: something that the programming language has to provide to us as a
           feature.</p>
 
-        <p>Well...</p>
-
-        <p class="fragment">You're right. Classes are magic.</p>
-
-        <p class="fragment" style="font-size: 150%;">...and <strong>WE</strong> are the wizards!</p>
+        <p class="fragment">But, if a programmer is a wizard, you shouldn't be afraid to make your own magic.</p>
       </section>
 
       <section class="bigcode">
@@ -275,14 +263,42 @@ print('Area is:', get_area(my_rectangle))</pre>
       <section>
         <h3>Encapsulation, Lisp-style</h3>
 
+        <code class="python"><pre>def make_rectangle(length, width):
+    return {'length': length, 'width': width}
+def get_perimeter(rectangle):
+    return 2 * (rectangle['length'] + rectangle['width'])
+def get_area(rectangle):
+    return rectangle['length'] * rectangle['width']
+
+my_rectangle = make_rectangle(3, 5)
+print('Perimeter is:', get_perimeter(my_rectangle))
+print('Area is:', get_area(my_rectangle))</pre>
+        </code>
         <ul>
           <li>Define a set of functions to create and act on an object.</li>
           <li class="fragment">In those functions, "privately" use any data structure you want to represent the object.
           </li>
           <li class="fragment">"Outsider" code uses those functions exclusively, and is agnostic to the data structure.
           </li>
+        </ul>
+
+      </section>
+      <section>
+        <h3>Encapsulation, Lisp-style</h3>
+
+        <code class="python"><pre># RIGHT
+print('Perimeter is:', get_perimeter(my_rectangle))
+print('Area is:', get_area(my_rectangle))
+
+# WRONG - Breaks encapsulation
+print('Perimeter is:', my_rectangle['perimeter'])
+print('Area is:', my_rectangle['area'])
+	  </pre>
+        </code>
+        <ul>
           <li class="fragment">Ignoring the private implementation details is a matter of convention.</li>
           <li class="fragment">A failure in such discipline is called "violating the data abstraction".</li>
+          <li class="fragment">In a class whose textbook is <i>SICP</i>, this loses you homework points.</li>
         </ul>
 
       </section>
@@ -379,7 +395,10 @@ big_rectangle = make_rectangle(30, 50)
 print(get_area(small_rectangle), get_area(big_rectangle))</pre>
         </code>
 
-        <p class="fragment">Note that the calculation logic has moved from the "get" functions to the object itself.</p>
+	<ul>
+	  <li class="fragment">Something very important has changed here.</li>
+	  <li class="fragment">The calculation logic has moved from the "get" functions to the object itself.</li>
+	</ul>
       </section>
       <section>
         <p>Message passing isn't the kind of design pattern you use in everyday coding, but it's really what happens
@@ -389,13 +408,13 @@ print(get_area(small_rectangle), get_area(big_rectangle))</pre>
           it so elegantly that you don't think about it.</p>
       </section>
       <section>
-        <p>No one go downstairs and check in code that looks like this.</p>
-        <code class="java"><pre>  public void processArticle(String message, Article article) {
-    if ("ingest".equals(message)) {
+        <p>You shouldn't be writing code in an object-oriented language that looks like this.</p>
+        <code class="java"><pre>  public void update(String message, Record record) {
+    if (message.equals("markAsActive")) {
       // ...
-    } else if ("render".equals(message)) {
+    } else if (message.equals("markAsInactive")) {
       // ...
-    } else if ("delete".equals(message)) {
+    } else if (message.equals("delete")) {
       // ...
     }
   }</pre>
@@ -451,13 +470,15 @@ print(get_area(small_rectangle), get_area(big_rectangle))</pre>
           <tr>
             <td>Java</td>
             <td>Fakes it pretty well</td>
-            <td>Yes,<br/>in Java 8!</td>
+            <td>In Java 8,<br/>yes</td>
             <td>Fakes it awkwardly</td>
           </tr>
         </table>
       </section>
 
       <section>
+        <h3>Java's faux closures</h3>
+
         <p>In Java, what you see is this:</p>
         <code class="java"><pre>  public long getCount(final String name) {
     return hibernateTemplate.execute(new HibernateCallback&lt;Long&gt;() {
@@ -490,9 +511,8 @@ print(get_area(small_rectangle), get_area(big_rectangle))</pre>
   }</pre>
         </code>
 
-        <p class="fragment">Java forces you to declare <code>name</code> as <code>final</code> because you can't see
-          when it is passed to
-          the invisible constructor.
+        <p class="fragment">Java forces <code>name</code> to be logically <code>final</code> so that it won't matter
+          when it is passed to the invisible constructor.
         </p>
       </section>
 
@@ -590,9 +610,7 @@ map((lambda x: x * x),  # Anonymous
           <li class="fragment">There will be no information hiding.
             <ul>
               <li class="fragment">Python doesn't do it.</li>
-              <li class="fragment">Open access!</li>
             </ul>
-
           </li>
         </ul>
 
@@ -636,15 +654,14 @@ map((lambda x: x * x),  # Anonymous
     <section class="bigcode"><code class="ruby" data-file="code/step3.rb"></code></section>
     <section class="bigcode"><code class="ruby" data-file="code/step4.rb"></code></section>
     <section class="bigcode"><code class="ruby" data-file="code/step5.rb"></code></section>
-    <section class="bigcode"><code class="ruby" data-file="code/step6.rb"></code></section>
     <section class="bigcode"><code class="ruby" data-file="code/wizard_class.rb"></code></section>
 
     <section>
       <p>View these slides at<br/>
-        <a href="http://rskonnord-plos.github.io/wizard-class/">http://rskonnord-plos.github.io/wizard-class/</a>
+        <a href="http://ryanskonnord.github.io/wizard-class/">http://ryanskonnord.github.io/wizard-class/</a>
       </p>
       <p>Check out the code at<br/>
-        <a href="https://github.com/rskonnord-plos/wizard-class">https://github.com/rskonnord-plos/wizard-class</a>
+        <a href="https://github.com/ryanskonnord/wizard-class">https://github.com/ryanskonnord/wizard-class</a>
       </p>
       <p>These slides use <a href="https://github.com/hakimel/reveal.js/">reveal.js</a>.</p>
       <p style="font-size: 50%;">

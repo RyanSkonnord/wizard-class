@@ -73,32 +73,28 @@ def make_class(parents, method_table)
   return new_class
 end
 
+
 Person = make_class([],
                     {
                       :introduce => lambda do |this|
                         name = ask(this, :get_field, :name)
                         puts "Hello, my name is #{name}."
                       end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                    })
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        hat_color = ask(this, :get_field, :hat_color)
-                        puts "Lo, behold, I am #{name} the #{hat_color}."
-                      end
                     })
 
 sam = ask(Person, :instantiate)
 ask(sam, :set_field, :name, 'Sam')
 ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
+puts
+
+Wizard = make_class([Person],
+                    {
+                      :cast_spell => lambda do |this, spell|
+                        puts "I cast the #{spell} spell!"
+                      end,
+                    })
 
 gandalf = ask(Wizard, :instantiate)
 ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
 ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)
+ask(gandalf, :call_method, :cast_spell, 'Light')

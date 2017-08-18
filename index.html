@@ -6,8 +6,8 @@
 
   <title>Wizard Class</title>
 
-  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-  <meta name="author" content="Hakim El Hattab">
+  <!--meta name="description" content=""-->
+  <meta name="author" content="Ryan Skonnord">
 
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -76,7 +76,7 @@
 
     <section>
       <h1>Wizard Class</h1>
-      <h4>with <a href="mailto:rskonnord@plos.org">Ryan Skonnord</a></h4>
+      <h4>with <a href="mailto:ryanskonnord@gmail.com">Ryan Skonnord</a></h4>
     </section>
     <section>
       <section>
@@ -101,8 +101,7 @@
           science, aside from implementation details.</p>
 
         <p class="fragment">It uses basic, but very elegant and powerful, concepts to explain a wide variety of topics
-          in
-          programming.</p>
+          in programming.</p>
 
         <p class="fragment">These concepts are expressed in the language Scheme, a dialect of Lisp.</p>
       </section>
@@ -146,102 +145,60 @@
           abstractions.</p>
 
         <p class="fragment">I was inspired by something that the faculty at Berkeley had added on to the course
-          material: a library of
-          macros that extended Scheme with object-oriented features.</p>
+          material: a library of macros that extended Scheme with object-oriented features.</p>
 
         <p class="fragment">Let's make our own classes.</p>
-      </section>
-      <section>
-        <p>I was also inspired by Matt Bowen's talk on abstraction layers.</p>
-
-        <p class="fragment">Whereas Matt delved through multiple layers, I want to take a microscope to a single
-          abstraction.</p>
       </section>
 
       <section>
         <p>You might think of classes as magic: something that the programming language has to provide to us as a
           feature.</p>
 
-        <p>Well...</p>
-
-        <p class="fragment">You're right. Classes are magic.</p>
-
-        <p class="fragment" style="font-size: 150%;">...and <strong>WE</strong> are the wizards!</p>
+        <p class="fragment">But, if a programmer is a wizard, you shouldn't be afraid to make your own magic.</p>
       </section>
 
       <section class="bigcode">
         <pre><code class="ruby">class Person
   attr_accessor :name
-  attr_accessor :weapon
 
   def introduce
     puts "Hello, my name is #{@name}."
   end
-
-  def drink_tea
-    puts 'Slurp'
-  end
-
-  def fight(target)
-    unless @weapon.nil?
-      puts "#{@name} fights #{target.name}. #{@weapon.attack}"
-    end
-  end
 end
 
 class Wizard < Person
-  attr_accessor :hat_color
-  attr_accessor :is_humble
+  attr_accessor :weapon
 
-  def introduce
-    if is_humble then
-      super
-    else
-      puts "Lo, behold, I am #{name} the #{hat_color}."
-    end
+  def cast_spell(spell)
+    puts "I cast the #{spell} spell!"
   end
-
 end
 
 sam = Person.new
 sam.name = 'Sam'
 sam.introduce
+puts
 
 gandalf = Wizard.new
 gandalf.name = 'Gandalf'
-gandalf.hat_color = 'Grey'
 gandalf.introduce
+gandalf.cast_spell('Light')
+puts
 
-saruman = Wizard.new
-saruman.name = 'Saruman'
-saruman.hat_color = 'White'
-saruman.introduce
-
-gandalf.is_humble = true
-gandalf.introduce
-
-class Staff
-  def attack
-    'Zap!'
+class FireWizard < Wizard
+  def cast_spell(spell)
+    super
+    if spell == 'Fire'
+      puts "My favorite!"
+    end
   end
 end
 
-class FireStaff < Staff
-  def attack
-    'Fwoosh! Kaboom!'
-  end
-end
+gandalf.cast_spell('Fire')
+puts
 
-class FrostStaff < Staff
-  def attack
-    'Brr! Crack!'
-  end
-end
-
-gandalf.weapon = FireStaff.new
-saruman.weapon = FrostStaff.new
-gandalf.fight(saruman)
-saruman.fight(gandalf)</code></pre>
+chandra = FireWizard.new
+chandra.cast_spell('Fire')</code></pre>
       </section>
     </section>
 
@@ -345,14 +302,40 @@ print('Area is:', get_area(my_rectangle))</code></pre>
       <section>
         <h3>Encapsulation, Lisp-style</h3>
 
+        <pre><code class="python">def make_rectangle(length, width):
+    return {'length': length, 'width': width}
+def get_perimeter(rectangle):
+    return 2 * (rectangle['length'] + rectangle['width'])
+def get_area(rectangle):
+    return rectangle['length'] * rectangle['width']
+
+my_rectangle = make_rectangle(3, 5)
+print('Perimeter is:', get_perimeter(my_rectangle))
+print('Area is:', get_area(my_rectangle))</code></pre>
         <ul>
           <li>Define a set of functions to create and act on an object.</li>
           <li class="fragment">In those functions, "privately" use any data structure you want to represent the object.
           </li>
           <li class="fragment">"Outsider" code uses those functions exclusively, and is agnostic to the data structure.
           </li>
+        </ul>
+
+      </section>
+      <section>
+        <h3>Encapsulation, Lisp-style</h3>
+
+        <pre><code class="python"># RIGHT
+print('Perimeter is:', get_perimeter(my_rectangle))
+print('Area is:', get_area(my_rectangle))
+
+# WRONG - Breaks encapsulation
+print('Perimeter is:', my_rectangle['perimeter'])
+print('Area is:', my_rectangle['area'])
+	  </code></pre>
+        <ul>
           <li class="fragment">Ignoring the private implementation details is a matter of convention.</li>
           <li class="fragment">A failure in such discipline is called "violating the data abstraction".</li>
+          <li class="fragment">In a class whose textbook is <i>SICP</i>, this loses you homework points.</li>
         </ul>
 
       </section>
@@ -445,7 +428,10 @@ small_rectangle = make_rectangle(3, 5)
 big_rectangle = make_rectangle(30, 50)
 print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
 
-        <p class="fragment">Note that the calculation logic has moved from the "get" functions to the object itself.</p>
+	<ul>
+	  <li class="fragment">Something very important has changed here.</li>
+	  <li class="fragment">The calculation logic has moved from the "get" functions to the object itself.</li>
+	</ul>
       </section>
       <section>
         <p>Message passing isn't the kind of design pattern you use in everyday coding, but it's really what happens
@@ -455,13 +441,13 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
           it so elegantly that you don't think about it.</p>
       </section>
       <section>
-        <p>No one go downstairs and check in code that looks like this.</p>
-        <pre><code class="java">  public void processArticle(String message, Article article) {
-    if ("ingest".equals(message)) {
+        <p>You shouldn't be writing code in an object-oriented language that looks like this.</p>
+        <pre><code class="java">  public void update(String message, Record record) {
+    if (message.equals("markAsActive")) {
       // ...
-    } else if ("render".equals(message)) {
+    } else if (message.equals("markAsInactive")) {
       // ...
-    } else if ("delete".equals(message)) {
+    } else if (message.equals("delete")) {
       // ...
     }
   }</code></pre>
@@ -516,13 +502,15 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
           <tr>
             <td>Java</td>
             <td>Fakes it pretty well</td>
-            <td>Yes,<br/>in Java 8!</td>
+            <td>In Java 8,<br/>yes</td>
             <td>Fakes it awkwardly</td>
           </tr>
         </table>
       </section>
 
       <section>
+        <h3>Java's faux closures</h3>
+
         <p>In Java, what you see is this:</p>
         <pre><code class="java">  public long getCount(final String name) {
     return hibernateTemplate.execute(new HibernateCallback&lt;Long&gt;() {
@@ -553,9 +541,8 @@ print(get_area(small_rectangle), get_area(big_rectangle))</code></pre>
     }
   }</code></pre>
 
-        <p class="fragment">Java forces you to declare <code>name</code> as <code>final</code> because you can't see
-          when it is passed to
-          the invisible constructor.
+        <p class="fragment">Java forces <code>name</code> to be logically <code>final</code> so that it won't matter
+          when it is passed to the invisible constructor.
         </p>
       </section>
 
@@ -652,9 +639,7 @@ map((lambda x: x * x),  # Anonymous
           <li class="fragment">There will be no information hiding.
             <ul>
               <li class="fragment">Python doesn't do it.</li>
-              <li class="fragment">Open access!</li>
             </ul>
-
           </li>
         </ul>
 
@@ -725,6 +710,7 @@ def make_class()
   return new_class
 end
 
+
 Person = make_class()
 sam = ask(Person, :instantiate)
 puts sam</code></pre></section>
@@ -760,6 +746,7 @@ def make_class()
 
   return new_class
 end
+
 
 Person = make_class()
 sam = ask(Person, :instantiate)
@@ -802,6 +789,7 @@ def make_class(method_table)
 
   return new_class
 end
+
 
 Person = make_class({
                       :introduce => lambda do |this|
@@ -866,35 +854,31 @@ def make_class(parents, method_table)
   return new_class
 end
 
+
 Person = make_class([],
                     {
                       :introduce => lambda do |this|
                         name = ask(this, :get_field, :name)
                         puts "Hello, my name is #{name}."
                       end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                    })
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        hat_color = ask(this, :get_field, :hat_color)
-                        puts "Lo, behold, I am #{name} the #{hat_color}."
-                      end
                     })
 
 sam = ask(Person, :instantiate)
 ask(sam, :set_field, :name, 'Sam')
 ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
+puts
+
+Wizard = make_class([Person],
+                    {
+                      :cast_spell => lambda do |this, spell|
+                        puts "I cast the #{spell} spell!"
+                      end,
+                    })
 
 gandalf = ask(Wizard, :instantiate)
 ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
 ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)</code></pre></section>
+ask(gandalf, :call_method, :cast_spell, 'Light')</code></pre></section>
     <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
   return (lambda do |message, *message_args|
             message_table[message].call(*message_args)
@@ -957,103 +941,6 @@ def make_class(parents, method_table)
   return new_class
 end
 
-Person = make_class([],
-                    {
-                      :introduce => lambda do |this|
-                        name = ask(this, :get_field, :name)
-                        puts "Hello, my name is #{name}."
-                      end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                    })
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        if ask(this, :get_field, :is_humble) then
-                          ask(this, :call_usual_method, Person, :introduce)
-                        else
-                          name = ask(this, :get_field, :name)
-                          hat_color = ask(this, :get_field, :hat_color)
-                          puts "Lo, behold, I am #{name} the #{hat_color}."
-                        end
-                      end
-                    })
-
-sam = ask(Person, :instantiate)
-ask(sam, :set_field, :name, 'Sam')
-ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
-
-gandalf = ask(Wizard, :instantiate)
-ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
-ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)
-
-ask(gandalf, :set_field, :is_humble, true)
-ask(gandalf, :call_method, :introduce)</code></pre></section>
-    <section class="bigcode"><pre><code class="ruby">def make_object(message_table)
-  return (lambda do |message, *message_args|
-            message_table[message].call(*message_args)
-          end)
-end
-
-def ask(object, message, *message_args)
-  return object.call(message, *message_args)
-end
-
-def make_class(parents, method_table)
-  class_message_table = {}
-  new_class = make_object(class_message_table)
-
-  class_message_table[:get_method] = lambda do |method_name|
-    method = nil
-    if method_table.has_key? method_name
-      method = method_table[method_name]
-    else
-      parents.each do |parent|
-        method = ask(parent, :get_method, method_name)
-        unless method.nil?
-          break
-        end
-      end
-    end
-    return method
-  end
-
-  class_message_table[:get_usual_method] = lambda do |method_name|
-    return method_table[method_name]
-  end
-
-  class_message_table[:instantiate] = lambda do | |
-    fields = {}
-    instance_message_table = {}
-    new_instance = make_object(instance_message_table)
-
-    instance_message_table[:get_field] = lambda do |field_name|
-      return fields[field_name]
-    end
-
-    instance_message_table[:set_field] = lambda do |field_name, value|
-      fields[field_name] = value
-    end
-
-    instance_message_table[:call_method] = lambda do |method_name, *method_args|
-      method = ask(new_class, :get_method, method_name)
-      return method.call(new_instance, *method_args)
-    end
-
-    instance_message_table[:call_usual_method] = lambda do |class_obj, method_name, *method_args|
-      method = ask(class_obj, :get_usual_method, method_name)
-      return method.call(new_instance, *method_args)
-    end
-
-    return new_instance
-  end
-
-  return new_class
-end
 
 Person = make_class([],
                     {
@@ -1061,82 +948,48 @@ Person = make_class([],
                         name = ask(this, :get_field, :name)
                         puts "Hello, my name is #{name}."
                       end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                      :fight => lambda do |this, target|
-                        weapon = ask(this, :get_field, :weapon)
-                        unless weapon.nil?
-                          name = ask(this, :get_field, :name)
-                          target_name = ask(target, :get_field, :name)
-                          weapon_attack = ask(weapon, :call_method, :attack)
-                          puts "#{name} fights #{target_name}. #{weapon_attack}"
-                        end
-                      end,
-                    })
-
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        if ask(this, :get_field, :is_humble) then
-                          ask(this, :call_usual_method, Person, :introduce)
-                        else
-                          name = ask(this, :get_field, :name)
-                          hat_color = ask(this, :get_field, :hat_color)
-                          puts "Lo, behold, I am #{name} the #{hat_color}."
-                        end
-                      end
                     })
 
 sam = ask(Person, :instantiate)
 ask(sam, :set_field, :name, 'Sam')
 ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
+puts
+
+Wizard = make_class([Person],
+                    {
+                      :cast_spell => lambda do |this, spell|
+                        puts "I cast the #{spell} spell!"
+                      end,
+                    })
 
 gandalf = ask(Wizard, :instantiate)
 ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
 ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)
+ask(gandalf, :call_method, :cast_spell, 'Light')
+puts
 
-saruman = ask(Wizard, :instantiate)
-ask(saruman, :set_field, :name, 'Saruman')
-ask(saruman, :set_field, :hat_color, 'White')
-ask(saruman, :call_method, :introduce)
-
-ask(gandalf, :set_field, :is_humble, true)
-ask(gandalf, :call_method, :introduce)
-
-Staff = make_class([],
-                   {
-                     :attack => lambda do |this|
-                       'Zap!'
-                     end
-                   })
-FireStaff = make_class([Staff],
-                       {
-                         :attack => lambda do |this|
-                           'Fwoosh! Kaboom!'
-                         end
-                       })
-FrostStaff = make_class([Staff],
+FireWizard = make_class([Wizard],
                         {
-                          :attack => lambda do |this|
-                            'Brr! Crack!'
-                          end
+                          :cast_spell => lambda do |this, spell|
+                            ask(this, :call_usual_method, Wizard, :cast_spell, spell)
+                            if spell == 'Fire'
+                              puts "My favorite!"
+                            end
+                          end,
                         })
 
-ask(gandalf, :set_field, :weapon, ask(FireStaff, :instantiate))
-ask(saruman, :set_field, :weapon, ask(FrostStaff, :instantiate))
-ask(gandalf, :call_method, :fight, saruman)
-ask(saruman, :call_method, :fight, gandalf)</code></pre></section>
+ask(gandalf, :call_method, :cast_spell, 'Fire')
+puts
+
+chandra = ask(FireWizard, :instantiate)
+ask(chandra, :call_method, :cast_spell, 'Fire')</code></pre></section>
 
     <section>
       <p>View these slides at<br/>
-        <a href="http://rskonnord-plos.github.io/wizard-class/">http://rskonnord-plos.github.io/wizard-class/</a>
+        <a href="http://ryanskonnord.github.io/wizard-class/">http://ryanskonnord.github.io/wizard-class/</a>
       </p>
       <p>Check out the code at<br/>
-        <a href="https://github.com/rskonnord-plos/wizard-class">https://github.com/rskonnord-plos/wizard-class</a>
+        <a href="https://github.com/ryanskonnord/wizard-class">https://github.com/ryanskonnord/wizard-class</a>
       </p>
       <p>These slides use <a href="https://github.com/hakimel/reveal.js/">reveal.js</a>.</p>
       <p style="font-size: 50%;">

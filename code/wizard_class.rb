@@ -82,78 +82,45 @@ def make_class(parents, method_table)
   return new_class
 end
 
+
 Person = make_class([],
                     {
                       :introduce => lambda do |this|
                         name = ask(this, :get_field, :name)
                         puts "Hello, my name is #{name}."
                       end,
-                      :drink_tea => lambda do |this|
-                        puts 'Slurp'
-                      end,
-                      :fight => lambda do |this, target|
-                        weapon = ask(this, :get_field, :weapon)
-                        unless weapon.nil?
-                          name = ask(this, :get_field, :name)
-                          target_name = ask(target, :get_field, :name)
-                          weapon_attack = ask(weapon, :call_method, :attack)
-                          puts "#{name} fights #{target_name}. #{weapon_attack}"
-                        end
-                      end,
-                    })
-
-Wizard = make_class([Person],
-                    {
-                      :introduce => lambda do |this|
-                        if ask(this, :get_field, :is_humble) then
-                          ask(this, :call_usual_method, Person, :introduce)
-                        else
-                          name = ask(this, :get_field, :name)
-                          hat_color = ask(this, :get_field, :hat_color)
-                          puts "Lo, behold, I am #{name} the #{hat_color}."
-                        end
-                      end
                     })
 
 sam = ask(Person, :instantiate)
 ask(sam, :set_field, :name, 'Sam')
 ask(sam, :call_method, :introduce)
-ask(sam, :call_method, :drink_tea)
+puts
+
+Wizard = make_class([Person],
+                    {
+                      :cast_spell => lambda do |this, spell|
+                        puts "I cast the #{spell} spell!"
+                      end,
+                    })
 
 gandalf = ask(Wizard, :instantiate)
 ask(gandalf, :set_field, :name, 'Gandalf')
-ask(gandalf, :set_field, :hat_color, 'Grey')
 ask(gandalf, :call_method, :introduce)
-ask(gandalf, :call_method, :drink_tea)
+ask(gandalf, :call_method, :cast_spell, 'Light')
+puts
 
-saruman = ask(Wizard, :instantiate)
-ask(saruman, :set_field, :name, 'Saruman')
-ask(saruman, :set_field, :hat_color, 'White')
-ask(saruman, :call_method, :introduce)
-
-ask(gandalf, :set_field, :is_humble, true)
-ask(gandalf, :call_method, :introduce)
-
-Staff = make_class([],
-                   {
-                     :attack => lambda do |this|
-                       'Zap!'
-                     end
-                   })
-FireStaff = make_class([Staff],
-                       {
-                         :attack => lambda do |this|
-                           'Fwoosh! Kaboom!'
-                         end
-                       })
-FrostStaff = make_class([Staff],
+FireWizard = make_class([Wizard],
                         {
-                          :attack => lambda do |this|
-                            'Brr! Crack!'
-                          end
+                          :cast_spell => lambda do |this, spell|
+                            ask(this, :call_usual_method, Wizard, :cast_spell, spell)
+                            if spell == 'Fire'
+                              puts "My favorite!"
+                            end
+                          end,
                         })
 
-ask(gandalf, :set_field, :weapon, ask(FireStaff, :instantiate))
-ask(saruman, :set_field, :weapon, ask(FrostStaff, :instantiate))
-ask(gandalf, :call_method, :fight, saruman)
-ask(saruman, :call_method, :fight, gandalf)
+ask(gandalf, :call_method, :cast_spell, 'Fire')
+puts
+
+chandra = ask(FireWizard, :instantiate)
+ask(chandra, :call_method, :cast_spell, 'Fire')

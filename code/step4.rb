@@ -58,6 +58,7 @@ def make_class(method_table)
   return new_class
 end
 
+
 Person = make_class({
                       :introduce => lambda do |this|
                         name = ask(this, :get_field, :name)

@@ -22,73 +22,42 @@
 
 class Person
   attr_accessor :name
-  attr_accessor :weapon
 
   def introduce
     puts "Hello, my name is #{@name}."
   end
-
-  def drink_tea
-    puts 'Slurp'
-  end
-
-  def fight(target)
-    unless @weapon.nil?
-      puts "#{@name} fights #{target.name}. #{@weapon.attack}"
-    end
-  end
 end
 
 class Wizard < Person
-  attr_accessor :hat_color
-  attr_accessor :is_humble
-  
-  def introduce
-    if is_humble then
-      super
-    else
-      puts "Lo, behold, I am #{name} the #{hat_color}."
-    end
-  end
+  attr_accessor :weapon
 
+  def cast_spell(spell)
+    puts "I cast the #{spell} spell!"
+  end
 end
 
 sam = Person.new
 sam.name = 'Sam'
 sam.introduce
+puts
 
 gandalf = Wizard.new
 gandalf.name = 'Gandalf'
-gandalf.hat_color = 'Grey'
 gandalf.introduce
+gandalf.cast_spell('Light')
+puts
 
-saruman = Wizard.new
-saruman.name = 'Saruman'
-saruman.hat_color = 'White'
-saruman.introduce
-
-gandalf.is_humble = true
-gandalf.introduce
-
-class Staff
-  def attack
-    'Zap!'
+class FireWizard < Wizard
+  def cast_spell(spell)
+    super
+    if spell == 'Fire'
+      puts "My favorite!"
+    end
   end
 end
 
-class FireStaff < Staff
-  def attack
-    'Fwoosh! Kaboom!'
-  end
-end
+gandalf.cast_spell('Fire')
+puts
 
-class FrostStaff < Staff
-  def attack
-    'Brr! Crack!'
-  end
-end
-
-gandalf.weapon = FireStaff.new
-saruman.weapon = FrostStaff.new
-gandalf.fight(saruman)
-saruman.fight(gandalf)
+chandra = FireWizard.new
+chandra.cast_spell('Fire')
